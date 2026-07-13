@@ -748,7 +748,7 @@ section.in-view .reveal {
 	height: 117.5px;
 }
 
-@media (max-width: 900px) {
+@media (min-width: 768px) and (max-width: 900px) {
 	.team-carousel {
 		display: flex;
 		align-items: center;
@@ -796,6 +796,33 @@ section.in-view .reveal {
 	}
 }
 
+/* Mobile: static 2-column grid instead of the swipeable carousel */
+@media (max-width: 767px) {
+	.team-carousel {
+		display: block;
+	}
+
+	.team-track-wrap {
+		overflow: visible;
+	}
+
+	.team-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 28px 16px;
+		width: auto;
+		transform: none !important;
+	}
+
+	.team-member {
+		width: auto;
+	}
+
+	.team-arrow {
+		display: none;
+	}
+}
+
 @media (max-width: 900px) {
 	:root {
 		--border-bar-width: 0.8cm;
@@ -835,6 +862,10 @@ section.in-view .reveal {
 	.founder-columns {
 		flex-direction: column;
 		gap: 32px;
+	}
+
+	.founder-name {
+		font-size: 2.6rem;
 	}
 
 	.founder-photo-col,
