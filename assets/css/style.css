@@ -886,6 +886,12 @@ section.in-view .reveal {
 	:root {
 		--border-bar-width: 16px;
 		--sticky-nav-offset: 64px;
+		/* techdraw.png is native ~1086px wide; the desktop 600px tile overflows
+		   a 360-430px mobile viewport and reads as an oversized, cropped-in
+		   zoom. Scaling the tile itself down (rather than switching to
+		   background-size: cover, which would crop it further) keeps it well
+		   inside the native resolution, so it stays just as sharp. */
+		--watermark-tile-size: 280px auto;
 	}
 
 	section {
