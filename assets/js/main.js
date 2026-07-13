@@ -1,0 +1,202 @@
+// UBD Global scripts
+
+(function () {
+	var REVEAL_SELECTOR = '.founder-title, h2, h3, p, .placeholder-box';
+	var STAGGER_MS = 140;
+
+	var sections = document.querySelectorAll('section:not(#header):not(#hero)');
+
+	sections.forEach(function (section) {
+		var targets = section.querySelectorAll(REVEAL_SELECTOR);
+
+		targets.forEach(function (el, index) {
+			el.classList.add('reveal');
+			el.style.transitionDelay = (index * STAGGER_MS) + 'ms';
+		});
+	});
+
+	var observer = new IntersectionObserver(function (entries, obs) {
+		entries.forEach(function (entry) {
+			if (entry.isIntersecting) {
+				entry.target.classList.add('in-view');
+				obs.unobserve(entry.target);
+			}
+		});
+	}, {
+		threshold: 0.15,
+		rootMargin: '0px 0px -10% 0px'
+	});
+
+	sections.forEach(function (section) {
+		observer.observe(section);
+	});
+
+	var dividers = document.querySelectorAll('.section-divider');
+
+	var dividerObserver = new IntersectionObserver(function (entries, obs) {
+		entries.forEach(function (entry) {
+			if (entry.isIntersecting) {
+				entry.target.classList.add('in-view');
+				obs.unobserve(entry.target);
+			}
+		});
+	}, {
+		threshold: 0.5
+	});
+
+	dividers.forEach(function (divider) {
+		dividerObserver.observe(divider);
+	});
+
+	var heroMenu = document.querySelector('.hero-nav');
+	var stickyNav = document.querySelector('.sticky-nav');
+
+	if (heroMenu && stickyNav) {
+		var heroObserver = new IntersectionObserver(function (entries) {
+			entries.forEach(function (entry) {
+				stickyNav.classList.toggle('is-visible', !entry.isIntersecting);
+			});
+		}, {
+			threshold: 0
+		});
+
+		heroObserver.observe(heroMenu);
+	}
+
+	var requestForm = document.querySelector('.request-form');
+
+	if (requestForm) {
+		requestForm.addEventListener('submit', function (e) {
+			e.preventDefault();
+		});
+	}
+
+	var wrap = document.querySelector('#team .team-track-wrap');
+	var track = document.querySelector('#team .team-grid');
+	var prevBtn = document.querySelector('#team .team-arrow-prev');
+	var nextBtn = document.querySelector('#team .team-arrow-next');
+
+	if (wrap && track && prevBtn && nextBtn) {
+		var members = track.children;
+		var currentIndex = 0;
+
+		var itemStep = function () {
+			if (!members.length) return 0;
+			var itemWidth = members[0].getBoundingClientRect().width;
+			var gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || 0);
+			return itemWidth + gap;
+		};
+
+		var maxIndex = function () {
+			var step = itemStep();
+			if (!step) return 0;
+			var visibleCount = Math.floor(wrap.clientWidth / step);
+			return Math.max(members.length - visibleCount, 0);
+		};
+
+		var update = function () {
+			var max = maxIndex();
+			if (currentIndex > max) currentIndex = max;
+			var step = itemStep();
+			track.style.transform = 'translateX(-' + (currentIndex * step) + 'px)';
+			prevBtn.disabled = currentIndex <= 0;
+			nextBtn.disabled = currentIndex >= max;
+		};
+
+		prevBtn.addEventListener('click', function () {
+			currentIndex = Math.max(currentIndex - 1, 0);
+			update();
+		});
+
+		nextBtn.addEventListener('click', function () {
+			currentIndex = Math.min(currentIndex + 1, maxIndex());
+			update();
+		});
+
+		window.addEventListener('resize', update);
+
+		update();
+	}
+
+	var setupMarquee = function (marquee, track, secondsPerLoop) {
+		if (!marquee || !track) return;
+
+		var setWidth = 0;
+		var x = 0;
+		var isDragging = false;
+		var dragPointerId = null;
+		var dragStartClientX = 0;
+		var dragStartX = 0;
+		var lastTime = null;
+		var speedPxPerSec;
+
+		var wrapX = function (value) {
+			if (!setWidth) return 0;
+			value = value % setWidth;
+			if (value > 0) value -= setWidth;
+			return value;
+		};
+
+		var measure = function () {
+			setWidth = track.scrollWidth / 2;
+			speedPxPerSec = setWidth / secondsPerLoop;
+			x = wrapX(x);
+		};
+
+		var render = function () {
+			track.style.transform = 'translateX(' + x + 'px)';
+		};
+
+		var step = function (timestamp) {
+			if (lastTime === null) lastTime = timestamp;
+			var dt = timestamp - lastTime;
+			lastTime = timestamp;
+
+			if (!isDragging) {
+				x = wrapX(x - (speedPxPerSec * dt) / 1000);
+				render();
+			}
+
+			window.requestAnimationFrame(step);
+		};
+
+		track.addEventListener('pointerdown', function (e) {
+			isDragging = true;
+			dragPointerId = e.pointerId;
+			dragStartClientX = e.clientX;
+			dragStartX = x;
+			track.classList.add('is-dragging');
+			track.setPointerCapture(e.pointerId);
+		});
+
+		track.addEventListener('pointermove', function (e) {
+			if (!isDragging || e.pointerId !== dragPointerId) return;
+			x = wrapX(dragStartX + (e.clientX - dragStartClientX));
+			render();
+		});
+
+		var endDrag = function (e) {
+			if (!isDragging || e.pointerId !== dragPointerId) return;
+			isDragging = false;
+			dragPointerId = null;
+			track.classList.remove('is-dragging');
+		};
+
+		track.addEventListener('pointerup', endDrag);
+		track.addEventListener('pointercancel', endDrag);
+
+		track.addEventListener('dragstart', function (e) {
+			e.preventDefault();
+		});
+
+		window.addEventListener('resize', measure);
+		window.addEventListener('load', measure);
+
+		measure();
+		render();
+		window.requestAnimationFrame(step);
+	};
+
+	setupMarquee(document.querySelector('.clients-marquee'), document.querySelector('.clients-track'), 50);
+	setupMarquee(document.querySelector('.awards-marquee'), document.querySelector('.awards-track'), 50);
+})();
