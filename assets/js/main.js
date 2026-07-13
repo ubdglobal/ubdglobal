@@ -63,14 +63,6 @@
 		heroObserver.observe(heroMenu);
 	}
 
-	var requestForm = document.querySelector('.request-form');
-
-	if (requestForm) {
-		requestForm.addEventListener('submit', function (e) {
-			e.preventDefault();
-		});
-	}
-
 	var wrap = document.querySelector('#team .team-track-wrap');
 	var track = document.querySelector('#team .team-grid');
 	var prevBtn = document.querySelector('#team .team-arrow-prev');

@@ -220,7 +220,8 @@
 <section id="portfolio">
 	<h2>Portfolio Request</h2>
 	<p class="placeholder-text form-intro">Our complete portfolio is shared privately, upon request. Tell us a little about your project, and we'll be in touch.</p>
-	<form class="request-form">
+	<form class="request-form" action="https://formspree.io/f/mzdnbdev" method="POST">
+		<input type="hidden" name="_subject" value="New Portfolio Request - UBD Global">
 		<div class="form-field">
 			<label for="portfolio-name">Full Name</label>
 			<input type="text" id="portfolio-name" name="name" placeholder="Your full name" required>
@@ -235,7 +236,7 @@
 		</div>
 		<div class="form-field">
 			<label for="portfolio-project-type">Project Type</label>
-			<select id="portfolio-project-type" name="project-type" required>
+			<select id="portfolio-project-type" name="project_type" required>
 				<option value="" selected disabled>Select project type</option>
 				<option value="residential">Residential</option>
 				<option value="hospitality">Hospitality</option>
