@@ -125,7 +125,7 @@
 		update();
 	}
 
-	var setupMarquee = function (marquee, track, secondsPerLoop) {
+	var setupMarquee = function (marquee, track, secondsPerLoop, reverse) {
 		if (!marquee || !track) return;
 
 		var setWidth = 0;
@@ -137,6 +137,13 @@
 		var lastTime = null;
 		var speedPxPerSec;
 
+		// x must always stay within (-setWidth, 0], regardless of direction:
+		// the track's left edge then never sits right of the marquee's own
+		// left edge (which would expose blank space), and the track (two
+		// back-to-back copies, 2 * setWidth wide) always still overhangs the
+		// right edge. Shifting x by a full setWidth is visually seamless
+		// either way since both copies are identical - only the sign of the
+		// per-frame delta below controls which direction it visually scrolls.
 		var wrapX = function (value) {
 			if (!setWidth) return 0;
 			value = value % setWidth;
@@ -160,7 +167,8 @@
 			lastTime = timestamp;
 
 			if (!isDragging) {
-				x = wrapX(x - (speedPxPerSec * dt) / 1000);
+				var delta = (speedPxPerSec * dt) / 1000;
+				x = wrapX(x + (reverse ? delta : -delta));
 				render();
 			}
 
@@ -205,5 +213,5 @@
 	};
 
 	setupMarquee(document.querySelector('.clients-marquee'), document.querySelector('.clients-track'), 50);
-	setupMarquee(document.querySelector('.awards-marquee'), document.querySelector('.awards-track'), 50);
+	setupMarquee(document.querySelector('.awards-marquee'), document.querySelector('.awards-track'), 50, true);
 })();

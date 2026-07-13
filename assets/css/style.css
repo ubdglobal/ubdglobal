@@ -6,6 +6,7 @@
 	--color-text-soft: #454E5E; /* softened navy-charcoal for body copy, instead of pure black/navy */
 	--font-serif: "Cormorant Garamond", Georgia, "Times New Roman", Times, serif;
 	--font-sans: "Jost", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+	--font-heading: "Metropolis", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
 	--section-padding: 48px;
 	--divider-gap: 48px;
 	--border-bar-width: 3cm;
@@ -19,6 +20,14 @@
 	--watermark-position: center;
 	--watermark-tint-rgb: 20, 33, 61;  /* navy, for optional tint */
 	--watermark-tint-opacity: 0;       /* 0 = off; raise (e.g. 0.1) for a subtle navy wash over the image */
+}
+
+@font-face {
+	font-family: 'Metropolis';
+	src: url('../fonts/Metropolis-Regular.otf') format('opentype');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
 }
 
 * {
@@ -87,6 +96,14 @@ h1, h2, h3 {
 	font-size: 2.1rem;
 	letter-spacing: 0.5px;
 	margin: 0 0 32px 0;
+}
+
+/* Section headings set in Metropolis instead of the default serif.
+   Only the Regular (400) weight file is loaded, so the browser synthesizes
+   (faux-)bold for this 700 weight to preserve prior visual prominence. */
+.heading-metropolis {
+	font-family: var(--font-heading);
+	font-weight: 700;
 }
 
 #team h2,
