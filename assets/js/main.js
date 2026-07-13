@@ -63,6 +63,21 @@
 		heroObserver.observe(heroMenu);
 	}
 
+	// Grayscale-to-color hover for Founder/About Us/Our Team photos: driven by
+	// an explicit class instead of relying purely on CSS :hover, since Safari
+	// on Mac trackpads can leave :hover "stuck" active after a tap/click, or
+	// fail to engage it consistently.
+	var colorHoverTargets = document.querySelectorAll('.founder-photo, .about-photo, .team-photo-full, #team .team-member');
+
+	colorHoverTargets.forEach(function (el) {
+		el.addEventListener('mouseenter', function () {
+			el.classList.add('is-color');
+		});
+		el.addEventListener('mouseleave', function () {
+			el.classList.remove('is-color');
+		});
+	});
+
 	var wrap = document.querySelector('#team .team-track-wrap');
 	var track = document.querySelector('#team .team-grid');
 	var prevBtn = document.querySelector('#team .team-arrow-prev');
