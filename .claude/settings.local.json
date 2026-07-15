@@ -40,7 +40,11 @@
       "PowerShell(powershell -File \"C:\\\\Users\\\\UBDGLO~1\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-UBDglobal-Desktop-Projects-ubd-global\\\\b415532d-bba9-4de0-be02-a32735f5ffda\\\\scratchpad\\\\render_one.ps1\" \"team5.png\" 100 1.3 \"t5c.png\")",
       "PowerShell(powershell -File \"C:\\\\Users\\\\UBDGLO~1\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-UBDglobal-Desktop-Projects-ubd-global\\\\b415532d-bba9-4de0-be02-a32735f5ffda\\\\scratchpad\\\\render_one.ps1\" \"team5.png\" 140 1.55 \"t5d.png\")",
       "Bash(pkill -f \"http.server 8123\")",
-      "Bash(git mv *)"
+      "Bash(git mv *)",
+      "Bash(npm ls *)",
+      "Bash(npx --version)",
+      "Bash(npx -y playwright --version)",
+      "PowerShell(npm *)"
     ]
   }
 }

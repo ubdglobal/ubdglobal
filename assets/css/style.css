@@ -6,7 +6,7 @@
 	--color-text-soft: #454E5E; /* softened navy-charcoal for body copy, instead of pure black/navy */
 	--font-serif: "Cormorant Garamond", Georgia, "Times New Roman", Times, serif;
 	--font-sans: "Jost", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-	--font-heading: "Metropolis", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+	--font-heading: "Ogg", serif;
 	--section-padding: 48px;
 	--divider-gap: 48px;
 	--border-bar-width: 3cm;
@@ -23,8 +23,16 @@
 }
 
 @font-face {
-	font-family: 'Metropolis';
-	src: url('../fonts/Metropolis-Regular.otf') format('opentype');
+	font-family: 'Ogg';
+	src: url('../fonts/Ogg-Medium.otf') format('opentype');
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Ogg';
+	src: url('../fonts/Ogg-Regular.otf') format('opentype');
 	font-weight: 400;
 	font-style: normal;
 	font-display: swap;
@@ -98,12 +106,10 @@ h1, h2, h3 {
 	margin: 0 0 32px 0;
 }
 
-/* Section headings set in Metropolis instead of the default serif.
-   Only the Regular (400) weight file is loaded, so the browser synthesizes
-   (faux-)bold for this 700 weight to preserve prior visual prominence. */
-.heading-metropolis {
+/* Section headings set in Ogg instead of the default serif. */
+.heading-ogg {
 	font-family: var(--font-heading);
-	font-weight: 700;
+	font-weight: 400;
 }
 
 #team h2,
@@ -430,9 +436,9 @@ section.in-view .reveal {
 }
 
 .about-col-heading {
-	font-family: var(--font-sans);
+	font-family: var(--font-heading);
 	color: var(--color-navy);
-	font-size: 13px;
+	font-size: 16.9px;
 	font-weight: 500;
 	letter-spacing: 3px;
 	text-transform: uppercase;
@@ -450,11 +456,36 @@ section.in-view .reveal {
 	margin-bottom: 0;
 }
 
-/* Founder statement / quote */
-.about-quote {
-	max-width: 720px;
+/* Founder statement / quote slideshow: crossfades between the quote text
+   and a 3-photo row. Both slides share the same grid cell so the wrapper's
+   height always matches the taller slide, and opacity is the only thing
+   that changes on swap — the section never resizes/jumps mid-transition. */
+.quote-slideshow {
+	position: relative;
+	display: grid;
+	max-width: 900px;
 	margin: 112px auto 0 auto;
 	padding: 0 24px;
+}
+
+.quote-slide {
+	grid-column: 1;
+	grid-row: 1;
+	min-width: 0;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.9s ease, visibility 0s linear 0.9s;
+}
+
+.quote-slide.is-active {
+	opacity: 1;
+	visibility: visible;
+	transition: opacity 0.9s ease, visibility 0s linear 0s;
+}
+
+.about-quote {
+	max-width: 720px;
+	margin: 0 auto;
 	text-align: center;
 }
 
@@ -467,6 +498,44 @@ section.in-view .reveal {
 	line-height: 1.45;
 	color: var(--color-navy);
 	margin: 0;
+}
+
+.quote-photos {
+	display: flex;
+	align-items: flex-end;
+	gap: 36px;
+	width: 100%;
+}
+
+.quote-photo-frame {
+	flex: 1 1 0;
+	aspect-ratio: 4 / 3;
+	border-radius: 18px;
+	overflow: hidden;
+	box-shadow: 0 20px 40px rgba(20, 33, 61, 0.15);
+	opacity: 0;
+	transform: scale(0.95);
+	transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Center image reads slightly larger and lifted, magazine-triptych style */
+.quote-photo-frame.is-featured {
+	flex: 1.2 1 0;
+	aspect-ratio: 4 / 3.5;
+	margin-bottom: 26px;
+}
+
+.quote-photos.is-active .quote-photo-frame {
+	opacity: 1;
+	transform: scale(1);
+}
+
+.quote-photo {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
 }
 
 .team-photo-frame {
@@ -963,8 +1032,21 @@ section.in-view .reveal {
 		margin-bottom: 40px;
 	}
 
-	.about-quote {
+	.quote-slideshow {
 		margin: 80px auto 0 auto;
+	}
+
+	.quote-photos {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 20px;
+	}
+
+	.quote-photo-frame,
+	.quote-photo-frame.is-featured {
+		aspect-ratio: 16 / 10;
+		flex: 1 1 auto;
+		margin-bottom: 0;
 	}
 
 	.client-logo {

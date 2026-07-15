@@ -214,4 +214,18 @@
 
 	setupMarquee(document.querySelector('.clients-marquee'), document.querySelector('.clients-track'), 50);
 	setupMarquee(document.querySelector('.awards-marquee'), document.querySelector('.awards-track'), 50, true);
+
+	// Founder quote slideshow: crossfades between the quote text and the
+	// 3-photo row every ~5s, looping continuously.
+	var quoteSlides = document.querySelectorAll('.quote-slideshow .quote-slide');
+
+	if (quoteSlides.length > 1) {
+		var quoteSlideIndex = 0;
+
+		setInterval(function () {
+			quoteSlides[quoteSlideIndex].classList.remove('is-active');
+			quoteSlideIndex = (quoteSlideIndex + 1) % quoteSlides.length;
+			quoteSlides[quoteSlideIndex].classList.add('is-active');
+		}, 3000);
+	}
 })();
