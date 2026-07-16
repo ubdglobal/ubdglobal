@@ -969,6 +969,12 @@ section.in-view .reveal {
 
 	.hero {
 		padding: 0 24px;
+		gap: 36px;
+	}
+
+	.hero-logo {
+		/* 20% larger than the base clamp(160px, 36vw, 480px) */
+		width: clamp(192px, 43.2vw, 576px);
 	}
 
 	.hero-nav {

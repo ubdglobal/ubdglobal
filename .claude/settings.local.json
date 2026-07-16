@@ -51,7 +51,14 @@
       "Bash(where magick *)",
       "Bash(where convert *)",
       "Bash(where node *)",
-      "Bash('C:\\\\Users\\\\UBDglobal\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe' -c ' *)"
+      "Bash('C:\\\\Users\\\\UBDglobal\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe' -c ' *)",
+      "PowerShell(Add-Type -AssemblyName System.Drawing; $img = [System.Drawing.Image]::FromFile\\('C:\\\\Users\\\\UBDglobal\\\\Desktop\\\\Projects\\\\ubd-global\\\\assets\\\\img\\\\logo.png'\\); \"$\\($img.Width\\) x $\\($img.Height\\)\")",
+      "Bash(chromium-cli --help)",
+      "Bash(command -v chromium-cli)",
+      "Bash(command -v node)",
+      "Bash(command -v npx)",
+      "Bash(command -v npm)",
+      "Bash(curl -sf http://localhost:8791/assets/css/style.css)"
     ]
   }
 }
