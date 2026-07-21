@@ -58,7 +58,30 @@
       "Bash(command -v node)",
       "Bash(command -v npx)",
       "Bash(command -v npm)",
-      "Bash(curl -sf http://localhost:8791/assets/css/style.css)"
+      "Bash(curl -sf http://localhost:8791/assets/css/style.css)",
+      "Bash(python -m http.server 8791)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:8791/assets/img/show2.png)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:8791/index.html)",
+      "Bash(python3 -c \"import playwright\")",
+      "Bash(python -c \"import playwright\")",
+      "Bash(node -e \"require\\('playwright'\\)\")",
+      "Bash(pkill -f \"http.server 8791\")",
+      "Bash(rm -f quote_test.html)",
+      "Bash(pkill -f \"http.server 8792\")",
+      "PowerShell(python -c \"from PIL import Image; im = Image.open\\(r'C:\\\\Users\\\\UBDglobal\\\\Desktop\\\\Projects\\\\ubd-global\\\\assets\\\\img\\\\show2.png'\\); print\\(im.mode, im.size, im.info\\)\")",
+      "PowerShell(python -c \"import numpy, scipy; print\\(numpy.__version__, scipy.__version__\\)\")",
+      "PowerShell(pip install *)",
+      "PowerShell(python -c \"import scipy; print\\('ok', scipy.__version__\\)\")",
+      "PowerShell(python \"C:\\\\Users\\\\UBDGLO~1\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-UBDglobal-Desktop-Projects-ubd-global\\\\c6e55cc0-0dde-4cee-9ca3-d0cf631aa1f2\\\\scratchpad\\\\defringe_show2.py\")",
+      "PowerShell(python \"C:\\\\Users\\\\UBDGLO~1\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-UBDglobal-Desktop-Projects-ubd-global\\\\c6e55cc0-0dde-4cee-9ca3-d0cf631aa1f2\\\\scratchpad\\\\defringe_show2_v2.py\")",
+      "Bash(rm -f consistency_test.html)",
+      "Bash(pkill -f \"http.server\")",
+      "Bash(sed -i 's/<blockquote class=\"about-quote quote-slide is-active\">\\\\n\\\\t\\\\t\\\\t<p>&ldquo;We believe/XXX/' six_state_layout_test.html)",
+      "Bash(rm -f assets/img/show10.png assets/img/show11.png assets/img/show12.png)",
+      "Bash(cp assets/img/show10.original-backup.png assets/img/show10.png)",
+      "Bash(cp assets/img/show11.original-backup.png assets/img/show11.png)",
+      "Bash(cp assets/img/show12.original-backup.png assets/img/show12.png)",
+      "Skill(claude-in-chrome)"
     ]
   }
 }

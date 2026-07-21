@@ -215,17 +215,25 @@
 	setupMarquee(document.querySelector('.clients-marquee'), document.querySelector('.clients-track'), 50);
 	setupMarquee(document.querySelector('.awards-marquee'), document.querySelector('.awards-track'), 50, true);
 
-	// Founder quote slideshow: crossfades between the quote text and the
-	// 3-photo row every ~5s, looping continuously.
-	var quoteSlides = document.querySelectorAll('.quote-slideshow .quote-slide');
+	// Founder quote slideshow: cycles through quote 1 (3s) -> photos 1 (5s) ->
+	// quote 3 (3s) -> photos 3 (5s) -> quote 4 (3s) -> photos 4 (5s) -> loop,
+	// crossfading between each state.
+	var quoteSlideDurations = [3000, 5000, 3000, 5000, 3000, 5000];
 
-	if (quoteSlides.length > 1) {
-		var quoteSlideIndex = 0;
+	document.querySelectorAll('.quote-slideshow').forEach(function (slideshow) {
+		var quoteSlides = slideshow.querySelectorAll('.quote-slide');
 
-		setInterval(function () {
-			quoteSlides[quoteSlideIndex].classList.remove('is-active');
-			quoteSlideIndex = (quoteSlideIndex + 1) % quoteSlides.length;
-			quoteSlides[quoteSlideIndex].classList.add('is-active');
-		}, 3000);
-	}
+		if (quoteSlides.length > 1) {
+			var quoteSlideIndex = 0;
+
+			var cycleQuoteSlide = function () {
+				quoteSlides[quoteSlideIndex].classList.remove('is-active');
+				quoteSlideIndex = (quoteSlideIndex + 1) % quoteSlides.length;
+				quoteSlides[quoteSlideIndex].classList.add('is-active');
+				setTimeout(cycleQuoteSlide, quoteSlideDurations[quoteSlideIndex % quoteSlideDurations.length]);
+			};
+
+			setTimeout(cycleQuoteSlide, quoteSlideDurations[quoteSlideIndex % quoteSlideDurations.length]);
+		}
+	});
 })();
