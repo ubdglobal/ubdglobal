@@ -505,7 +505,7 @@ section.in-view .reveal {
 
 .quote-photos {
 	display: flex;
-	align-items: center;
+	align-items: flex-start;
 	gap: 43px;
 	width: 100%;
 }
@@ -524,6 +524,33 @@ section.in-view .reveal {
 .quote-photos.is-active .quote-photo-frame {
 	opacity: 1;
 	transform: scale(1);
+}
+
+/* Wraps a photo frame together with a caption underneath it (e.g. a project
+   name). It's a flex item in the same row as the plain .quote-photo-frame
+   photos, sized to match their width; the caption just adds extra height
+   below it without affecting the other photos' alignment (row uses
+   align-items: flex-start so every frame still lines up at the same top). */
+.quote-photo-col {
+	flex: 1 1 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.quote-photo-col .quote-photo-frame {
+	flex: none;
+	width: 100%;
+}
+
+.quote-photo-caption {
+	margin: 14px 0 0 0;
+	font-family: var(--font-serif);
+	font-style: italic;
+	font-size: 0.95rem;
+	letter-spacing: 0.02em;
+	color: var(--color-navy);
+	text-align: center;
 }
 
 .quote-photo {
@@ -1089,6 +1116,11 @@ section.in-view .reveal {
 		aspect-ratio: 16 / 10;
 		flex: 1 1 auto;
 		margin-bottom: 0;
+	}
+
+	.quote-photo-col {
+		flex: 1 1 auto;
+		width: 100%;
 	}
 
 	.quote-photo-frame.has-natural-edge {
