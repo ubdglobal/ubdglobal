@@ -515,6 +515,12 @@ section.in-view .reveal {
 }
 
 .quote-photo-frame {
+	/* Without this, a grid item's default min-width is "auto", which lets its
+	   content (the photo) push the column wider than its 1fr share whenever
+	   there's no caption row to anchor the track — that's what was causing
+	   the third photo to overflow on slides without a caption. */
+	min-width: 0;
+	min-height: 0;
 	aspect-ratio: 4 / 3;
 	border-radius: 18px;
 	overflow: hidden;
