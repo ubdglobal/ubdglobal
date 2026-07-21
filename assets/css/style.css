@@ -390,7 +390,7 @@ section.in-view .reveal {
 /* About section — editorial redesign */
 #about {
 	padding-top: 50px;
-	padding-bottom: 60px;
+	padding-bottom: 32px;
 }
 
 .about-photo-frame {
@@ -463,8 +463,8 @@ section.in-view .reveal {
 .quote-slideshow {
 	position: relative;
 	display: grid;
-	max-width: 900px;
-	margin: 112px auto 0 auto;
+	max-width: 1080px;
+	margin: 60px auto 0 auto;
 	padding: 0 24px;
 }
 
@@ -484,6 +484,9 @@ section.in-view .reveal {
 }
 
 .about-quote {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 	max-width: 720px;
 	margin: 0 auto;
 	text-align: center;
@@ -502,8 +505,8 @@ section.in-view .reveal {
 
 .quote-photos {
 	display: flex;
-	align-items: flex-end;
-	gap: 36px;
+	align-items: center;
+	gap: 43px;
 	width: 100%;
 }
 
@@ -518,13 +521,6 @@ section.in-view .reveal {
 	transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Center image reads slightly larger and lifted, magazine-triptych style */
-.quote-photo-frame.is-featured {
-	flex: 1.2 1 0;
-	aspect-ratio: 4 / 3.5;
-	margin-bottom: 26px;
-}
-
 .quote-photos.is-active .quote-photo-frame {
 	opacity: 1;
 	transform: scale(1);
@@ -536,6 +532,46 @@ section.in-view .reveal {
 	height: 100%;
 	object-fit: cover;
 	object-position: center;
+}
+
+/* show2.png (and the other triptych photos) have their own decorative
+   burnt-edge border baked into the image on a white background — cropping
+   them with CSS fights the art's own edge, so each frame is a fixed-size
+   box and the image is letterboxed (object-fit: contain) inside it. That
+   keeps every frame in a row exactly the same width and height and lined
+   up on the same row, regardless of each photo's own baked-in proportions. */
+.quote-photo-frame.has-natural-edge {
+	aspect-ratio: 4 / 3;
+	border-radius: 0;
+	box-shadow: none;
+	overflow: visible;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.quote-photo-frame.has-natural-edge .quote-photo {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+/* From the point the 1080px column already fills out (~992px) there's room
+   to let the triptych break out of the section and grow further, still
+   centered on the page. The max(1080px, …) floor guarantees it never
+   renders smaller than the base size above — it only ever grows from here,
+   up to the 1380px cap on the widest screens. Below 992px the section
+   column is still narrower than 1080px on its own, so normal flow already
+   scales the triptych down proportionally and this rule is left inactive. */
+@media (min-width: 992px) {
+	.quote-slideshow {
+		position: relative;
+		left: 50%;
+		transform: translateX(-50%);
+		max-width: none;
+		width: max(1080px, min(1380px, calc(100vw - (2 * var(--border-bar-width)) - 40px)));
+		margin: 60px 0 0 0;
+	}
 }
 
 .team-photo-frame {
@@ -1020,7 +1056,7 @@ section.in-view .reveal {
 
 	#about {
 		padding-top: 34px;
-		padding-bottom: 44px;
+		padding-bottom: 24px;
 	}
 
 	.about-columns {
@@ -1039,7 +1075,7 @@ section.in-view .reveal {
 	}
 
 	.quote-slideshow {
-		margin: 80px auto 0 auto;
+		margin: 44px auto 0 auto;
 	}
 
 	.quote-photos {
@@ -1053,6 +1089,10 @@ section.in-view .reveal {
 		aspect-ratio: 16 / 10;
 		flex: 1 1 auto;
 		margin-bottom: 0;
+	}
+
+	.quote-photo-frame.has-natural-edge {
+		aspect-ratio: auto;
 	}
 
 	.client-logo {
