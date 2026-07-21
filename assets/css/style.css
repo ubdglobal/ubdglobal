@@ -503,15 +503,18 @@ section.in-view .reveal {
 	margin: 0;
 }
 
+/* Grid (not flex) so the caption can be placed under the middle photo on
+   desktop (grid-column: 2) while, on mobile, a single override moves it to
+   the end — after all three stacked photos — without touching the HTML. */
 .quote-photos {
-	display: flex;
-	align-items: flex-start;
-	gap: 43px;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	column-gap: 43px;
+	row-gap: 14px;
 	width: 100%;
 }
 
 .quote-photo-frame {
-	flex: 1 1 0;
 	aspect-ratio: 4 / 3;
 	border-radius: 18px;
 	overflow: hidden;
@@ -526,25 +529,14 @@ section.in-view .reveal {
 	transform: scale(1);
 }
 
-/* Wraps a photo frame together with a caption underneath it (e.g. a project
-   name). It's a flex item in the same row as the plain .quote-photo-frame
-   photos, sized to match their width; the caption just adds extra height
-   below it without affecting the other photos' alignment (row uses
-   align-items: flex-start so every frame still lines up at the same top). */
-.quote-photo-col {
-	flex: 1 1 0;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-}
-
-.quote-photo-col .quote-photo-frame {
-	flex: none;
-	width: 100%;
-}
-
+/* Caption for the featured (middle) photo. Explicitly placed in row 2,
+   column 2 so it sits directly under that photo on the 3-column desktop
+   grid; the mobile media query resets this to auto so it falls back to
+   plain DOM order (after all three photos) in the single-column layout. */
 .quote-photo-caption {
-	margin: 14px 0 0 0;
+	grid-row: 2;
+	grid-column: 2;
+	margin: 0;
 	font-family: var(--font-serif);
 	font-style: italic;
 	font-size: 0.95rem;
@@ -1106,25 +1098,26 @@ section.in-view .reveal {
 	}
 
 	.quote-photos {
-		flex-direction: column;
-		align-items: stretch;
-		gap: 20px;
+		grid-template-columns: 1fr;
+		row-gap: 20px;
 	}
 
 	.quote-photo-frame,
 	.quote-photo-frame.is-featured {
 		aspect-ratio: 16 / 10;
-		flex: 1 1 auto;
 		margin-bottom: 0;
-	}
-
-	.quote-photo-col {
-		flex: 1 1 auto;
-		width: 100%;
 	}
 
 	.quote-photo-frame.has-natural-edge {
 		aspect-ratio: auto;
+	}
+
+	/* Reset the desktop's explicit row 2 / column 2 placement so the caption
+	   falls back to plain DOM order — after all three stacked photos —
+	   instead of appearing right under the middle one. */
+	.quote-photo-caption {
+		grid-row: auto;
+		grid-column: 1;
 	}
 
 	.client-logo {
