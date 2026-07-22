@@ -217,7 +217,8 @@
 
 	// Founder quote slideshow: cycles through quote 1 (3s) -> photos 1 (5s) ->
 	// quote 3 (3s) -> photos 3 (5s) -> quote 4 (3s) -> photos 4 (5s) -> loop,
-	// crossfading between each state.
+	// crossfading between each state. Clicking/tapping the slideshow jumps to
+	// the next slide right away instead of waiting out the timer.
 	var quoteSlideDurations = [3000, 5000, 3000, 5000, 3000, 5000];
 
 	document.querySelectorAll('.quote-slideshow').forEach(function (slideshow) {
@@ -225,15 +226,39 @@
 
 		if (quoteSlides.length > 1) {
 			var quoteSlideIndex = 0;
+			var quoteSlideTimer = null;
 
-			var cycleQuoteSlide = function () {
+			var scheduleNext = function () {
+				if (quoteSlideTimer) {
+					clearTimeout(quoteSlideTimer);
+				}
+				quoteSlideTimer = setTimeout(advanceQuoteSlide, quoteSlideDurations[quoteSlideIndex % quoteSlideDurations.length]);
+			};
+
+			var advanceQuoteSlide = function () {
 				quoteSlides[quoteSlideIndex].classList.remove('is-active');
 				quoteSlideIndex = (quoteSlideIndex + 1) % quoteSlides.length;
 				quoteSlides[quoteSlideIndex].classList.add('is-active');
-				setTimeout(cycleQuoteSlide, quoteSlideDurations[quoteSlideIndex % quoteSlideDurations.length]);
+				scheduleNext();
 			};
 
-			setTimeout(cycleQuoteSlide, quoteSlideDurations[quoteSlideIndex % quoteSlideDurations.length]);
+			slideshow.classList.add('is-clickable');
+			slideshow.setAttribute('role', 'button');
+			slideshow.setAttribute('tabindex', '0');
+			slideshow.setAttribute('aria-label', 'Show next');
+
+			slideshow.addEventListener('click', function () {
+				advanceQuoteSlide();
+			});
+
+			slideshow.addEventListener('keydown', function (e) {
+				if (e.key === 'Enter' || e.key === ' ') {
+					e.preventDefault();
+					advanceQuoteSlide();
+				}
+			});
+
+			scheduleNext();
 		}
 	});
 })();

@@ -468,6 +468,17 @@ section.in-view .reveal {
 	padding: 0 24px;
 }
 
+/* Click/tap anywhere on the slideshow to skip ahead instead of waiting for
+   the automatic timer (see main.js). */
+.quote-slideshow.is-clickable {
+	cursor: pointer;
+}
+
+.quote-slideshow.is-clickable:focus-visible {
+	outline: 2px solid var(--color-navy);
+	outline-offset: 6px;
+}
+
 .quote-slide {
 	grid-column: 1;
 	grid-row: 1;
