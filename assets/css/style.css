@@ -469,9 +469,15 @@ section.in-view .reveal {
 }
 
 /* Click/tap anywhere on the slideshow to skip ahead instead of waiting for
-   the automatic timer (see main.js). */
+   the automatic timer; pressing and holding pauses it instead (see main.js).
+   user-select/touch-action are disabled so a held press doesn't trigger text
+   selection or a mobile long-press callout menu instead of the pause. */
 .quote-slideshow.is-clickable {
 	cursor: pointer;
+	-webkit-user-select: none;
+	user-select: none;
+	touch-action: manipulation;
+	-webkit-touch-callout: none;
 }
 
 .quote-slideshow.is-clickable:focus-visible {

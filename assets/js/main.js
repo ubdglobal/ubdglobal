@@ -217,9 +217,13 @@
 
 	// Founder quote slideshow: cycles through quote 1 (3s) -> photos 1 (5s) ->
 	// quote 3 (3s) -> photos 3 (5s) -> quote 4 (3s) -> photos 4 (5s) -> loop,
-	// crossfading between each state. Clicking/tapping the slideshow jumps to
-	// the next slide right away instead of waiting out the timer.
+	// crossfading between each state. A quick tap/click jumps to the next
+	// slide right away instead of waiting out the timer. Pressing and HOLDING
+	// pauses the slideshow on the current slide - the auto-advance timer is
+	// cleared on press-down and only resumes (without skipping ahead) once
+	// released, so a held press never counts as a "next slide" click.
 	var quoteSlideDurations = [3000, 5000, 3000, 5000, 3000, 5000];
+	var QUOTE_HOLD_THRESHOLD_MS = 250;
 
 	document.querySelectorAll('.quote-slideshow').forEach(function (slideshow) {
 		var quoteSlides = slideshow.querySelectorAll('.quote-slide');
@@ -227,11 +231,17 @@
 		if (quoteSlides.length > 1) {
 			var quoteSlideIndex = 0;
 			var quoteSlideTimer = null;
+			var pressStartTime = null;
 
-			var scheduleNext = function () {
+			var clearQuoteTimer = function () {
 				if (quoteSlideTimer) {
 					clearTimeout(quoteSlideTimer);
+					quoteSlideTimer = null;
 				}
+			};
+
+			var scheduleNext = function () {
+				clearQuoteTimer();
 				quoteSlideTimer = setTimeout(advanceQuoteSlide, quoteSlideDurations[quoteSlideIndex % quoteSlideDurations.length]);
 			};
 
@@ -247,9 +257,31 @@
 			slideshow.setAttribute('tabindex', '0');
 			slideshow.setAttribute('aria-label', 'Show next');
 
-			slideshow.addEventListener('click', function () {
-				advanceQuoteSlide();
+			slideshow.addEventListener('pointerdown', function () {
+				pressStartTime = Date.now();
+				clearQuoteTimer();
 			});
+
+			slideshow.addEventListener('pointerup', function () {
+				if (pressStartTime === null) return;
+				var heldFor = Date.now() - pressStartTime;
+				pressStartTime = null;
+
+				if (heldFor < QUOTE_HOLD_THRESHOLD_MS) {
+					advanceQuoteSlide();
+				} else {
+					scheduleNext();
+				}
+			});
+
+			var cancelPress = function () {
+				if (pressStartTime === null) return;
+				pressStartTime = null;
+				scheduleNext();
+			};
+
+			slideshow.addEventListener('pointercancel', cancelPress);
+			slideshow.addEventListener('pointerleave', cancelPress);
 
 			slideshow.addEventListener('keydown', function (e) {
 				if (e.key === 'Enter' || e.key === ' ') {
